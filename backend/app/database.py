@@ -25,10 +25,15 @@ if not DATABASE_URL:
         "Please configure your .env file with a valid PostgreSQL connection string."
     )
 
-# Ensure the URL is using the psotgresql+psycopg driver (for sync)
-# SQLAlchemy 2.0+ supports psycopg 3 in sync mode via postgresql+psycopg://
+# Ensure the URL is using the postgresql+psycopg driver (for sync)
 if DATABASE_URL.startswith("postgresql://"):
     DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
+# Production SSL Fix: Neon and many other cloud DBs require SSL
+if "localhost" not in DATABASE_URL and "127.0.0.1" not in DATABASE_URL:
+    if "sslmode" not in DATABASE_URL:
+        separator = "&" if "?" in DATABASE_URL else "?"
+        DATABASE_URL += f"{separator}sslmode=require"
 
 # Create sync engine
 engine = create_engine(

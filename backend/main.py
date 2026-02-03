@@ -101,6 +101,12 @@ async def health_check():
 
 # Include routers
 from app.routes import auth, tasks
+import uvicorn
 
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(tasks.router, prefix="/api/tasks", tags=["Tasks"])
+
+if __name__ == "__main__":
+    # Programmatic execution for deployment platforms (Railway, Render, etc.)
+    port = int(os.environ.get("PORT", 8001))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
