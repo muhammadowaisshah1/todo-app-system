@@ -161,7 +161,7 @@ export default function DashboardPage() {
           <Button
             onClick={() => setShowCreateModal(true)}
             size="lg"
-            className="bg-white text-blue-600 hover:bg-white/90 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-semibold"
+            className="bg-white !text-blue-600 hover:bg-white/90 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-semibold"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@ export default function DashboardPage() {
               <path d="M5 12h14" />
               <path d="M12 5v14" />
             </svg>
-            New Task
+            <span className="font-semibold text-blue-600">New Task</span>
           </Button>
         </div>
       </div>
