@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #0070f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0051cc;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f0f0f0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🧪 API Authentication Test</h1>
+
+    <div class="test-section">
+        <h2>Step 1: Check Token</h2>
+        <button onclick="checkToken()">Check Token in LocalStorage</button>
+        <div id="token-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Step 2: Test Backend Health</h2>
+        <button onclick="testBackend()">Test Backend Connection</button>
+        <div id="backend-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Step 3: Test Tasks Endpoint</h2>
+        <button onclick="testTasks()">Fetch Tasks with Auth</button>
+        <div id="tasks-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Step 4: Test User Endpoint</h2>
+        <button onclick="testUser()">Get Current User</button>
+        <div id="user-result" class="result"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        function checkToken() {
+            const result = document.getElementById('token-result');
+            const token = localStorage.getItem('auth_token');
+            const user = localStorage.getItem('user');
+
+            if (token) {
+                result.className = 'result success';
+                result.textContent = `✅ Token Found!\n\nToken (first 50 chars): ${token.substring(0, 50)}...\n\nUser Data: ${user}`;
+            } else {
+                result.className = 'result error';
+                result.textContent = '❌ No token found! Please login first at http://localhost:3000';
+            }
+        }
+
+        async function testBackend() {
+            const result = document.getElementById('backend-result');
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                result.className = 'result success';
+                result.textContent = `✅ Backend is running!\n\n${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = `❌ Backend connection failed!\n\nError: ${error.message}`;
+            }
+        }
+
+        async function testTasks() {
+            const result = document.getElementById('tasks-result');
+            const token = localStorage.getItem('auth_token');
+
+            if (!token) {
+                result.className = 'result error';
+                result.textContent = '❌ No token found! Please login first.';
+                return;
+            }
+
+            try {
+                console.log('🔍 Fetching tasks...');
+                console.log('🔑 Token:', token.substring(0, 50) + '...');
+
+                const response = await fetch(`${API_URL}/api/tasks`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                console.log('📥 Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP ${response.status}: ${JSON.stringify(errorData)}`);
+                }
+
+                const data = await response.json();
+                console.log('✅ Tasks data:', data);
+
+                result.className = 'result success';
+                result.textContent = `✅ Tasks fetched successfully!\n\n${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                console.error('❌ Error:', error);
+                result.className = 'result error';
+                result.textContent = `❌ Failed to fetch tasks!\n\nError: ${error.message}`;
+            }
+        }
+
+        async function testUser() {
+            const result = document.getElementById('user-result');
+            const token = localStorage.getItem('auth_token');
+
+            if (!token) {
+                result.className = 'result error';
+                result.textContent = '❌ No token found! Please login first.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/me`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP ${response.status}: ${JSON.stringify(errorData)}`);
+                }
+
+                const data = await response.json();
+                result.className = 'result success';
+                result.textContent = `✅ User data retrieved!\n\n${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                result.className = 'result error';
+                result.textContent = `❌ Failed to get user!\n\nError: ${error.message}`;
+            }
+        }
+
+        // Auto-check token on load
+        window.onload = () => {
+            checkToken();
+        };
+    </script>
+</body>
+</html>

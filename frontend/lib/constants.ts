@@ -14,11 +14,11 @@ export const CATEGORIES = [
 ] as const;
 
 export const CATEGORY_COLORS = {
-  blue: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200 dark:border-blue-800',
-  purple: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 border-purple-200 dark:border-purple-800',
-  green: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800',
-  red: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800',
-  gray: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600',
+  blue: 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 dark:from-blue-950/50 dark:to-cyan-950/50 dark:text-blue-300 border-blue-300 dark:border-blue-700 shadow-sm shadow-blue-200/50 dark:shadow-blue-900/20',
+  purple: 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 dark:from-purple-950/50 dark:to-pink-950/50 dark:text-purple-300 border-purple-300 dark:border-purple-700 shadow-sm shadow-purple-200/50 dark:shadow-purple-900/20',
+  green: 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 dark:from-green-950/50 dark:to-emerald-950/50 dark:text-green-300 border-green-300 dark:border-green-700 shadow-sm shadow-green-200/50 dark:shadow-green-900/20',
+  red: 'bg-gradient-to-r from-red-100 to-orange-100 text-red-700 dark:from-red-950/50 dark:to-orange-950/50 dark:text-red-300 border-red-300 dark:border-red-700 shadow-sm shadow-red-200/50 dark:shadow-red-900/20',
+  gray: 'bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 dark:from-gray-800 dark:to-slate-800 dark:text-gray-300 border-gray-300 dark:border-gray-600 shadow-sm shadow-gray-200/50 dark:shadow-gray-900/20',
 } as const;
 
 export const PRIORITIES = [
@@ -28,9 +28,9 @@ export const PRIORITIES = [
 ] as const;
 
 export const PRIORITY_COLORS = {
-  red: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200 dark:border-red-800',
-  yellow: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800',
-  green: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200 dark:border-green-800',
+  red: 'bg-gradient-to-r from-red-100 to-rose-100 text-red-700 dark:from-red-950/50 dark:to-rose-950/50 dark:text-red-300 border-red-300 dark:border-red-700 shadow-sm shadow-red-200/50 dark:shadow-red-900/20 font-bold',
+  yellow: 'bg-gradient-to-r from-yellow-100 to-amber-100 text-yellow-700 dark:from-yellow-950/50 dark:to-amber-950/50 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700 shadow-sm shadow-yellow-200/50 dark:shadow-yellow-900/20 font-bold',
+  green: 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 dark:from-green-950/50 dark:to-emerald-950/50 dark:text-green-300 border-green-300 dark:border-green-700 shadow-sm shadow-green-200/50 dark:shadow-green-900/20 font-bold',
 } as const;
 
 export type CategoryValue = typeof CATEGORIES[number]['value'];

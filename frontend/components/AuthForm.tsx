@@ -143,12 +143,12 @@ export default function AuthForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto border-border/40 shadow-xl backdrop-blur-sm bg-card/95">
-      <CardHeader className="space-y-1 text-center">
-        <CardTitle className="text-2xl font-bold tracking-tight">
+    <Card className="w-full max-w-md mx-auto border-border/40 shadow-2xl backdrop-blur-xl bg-card/80 dark:bg-card/60 animate-slideUp">
+      <CardHeader className="space-y-2 text-center pb-6">
+        <CardTitle className="text-3xl font-bold tracking-tight">
           {mode === 'signin' ? 'Welcome back' : 'Create an account'}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-base">
           {mode === 'signin'
             ? 'Enter your credentials to access your account'
             : 'Enter your details to get started'}
@@ -234,7 +234,7 @@ export default function AuthForm() {
 
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/35 transition-all duration-300"
             disabled={loading}
             size="lg"
           >

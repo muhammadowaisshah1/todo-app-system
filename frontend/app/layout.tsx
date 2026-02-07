@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Todo App - Organize Your Tasks",
-  description: "Modern todo application with authentication and real-time updates",
+  title: "Prism - Smart Task Organization",
+  description: "Organize your tasks beautifully with smart priorities, categories, and due dates. Break down your tasks, organize your ideas.",
 };
 
 export default function RootLayout({

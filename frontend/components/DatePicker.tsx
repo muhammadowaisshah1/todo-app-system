@@ -26,11 +26,12 @@ interface DatePickerProps {
 export default function DatePicker({ value, onChange, label = 'Due Date', minDate }: DatePickerProps) {
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+      <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
+        <span className="text-lg">📅</span>
         {label}
-        <span className="text-gray-500 dark:text-gray-400 font-normal ml-2">(Optional)</span>
+        <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">(Optional)</span>
       </label>
-      <div className="relative">
+      <div className="relative group">
         <ReactDatePicker
           selected={value}
           onChange={onChange}
@@ -38,11 +39,11 @@ export default function DatePicker({ value, onChange, label = 'Due Date', minDat
           dateFormat="MMM dd, yyyy"
           placeholderText="Select due date"
           isClearable
-          className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 transition-all"
+          className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 transition-all duration-300 font-medium hover:border-blue-400 dark:hover:border-blue-500"
           wrapperClassName="w-full"
           calendarClassName="dark:bg-gray-800 dark:border-gray-700"
         />
-        <CalendarIcon className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 pointer-events-none" />
+        <CalendarIcon className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400 transition-colors pointer-events-none" />
       </div>
     </div>
   );

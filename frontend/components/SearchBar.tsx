@@ -21,20 +21,22 @@ interface SearchBarProps {
 
 export default function SearchBar({ value, onChange, placeholder }: SearchBarProps) {
   return (
-    <div className="relative">
+    <div className="relative group">
       <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder || "Search tasks..."}
-        className="w-full pl-12 pr-12 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800 transition-all"
+        className="w-full pl-14 pr-12 py-4 rounded-2xl border-2 border-border bg-background/50 backdrop-blur-sm text-foreground placeholder:text-muted-foreground focus:border-cyan-500 dark:focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/20 dark:focus:ring-cyan-400/20 transition-all duration-300 shadow-sm hover:shadow-md font-medium"
         aria-label="Search tasks"
       />
-      <MagnifyingGlassIcon className="absolute left-4 top-3.5 h-5 w-5 text-gray-400 pointer-events-none" />
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 text-white pointer-events-none group-focus-within:scale-110 transition-transform">
+        <MagnifyingGlassIcon className="h-4 w-4" />
+      </div>
       {value && (
         <button
           onClick={() => onChange('')}
-          className="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground hover:bg-destructive/10 rounded-lg transition-all duration-300 hover:scale-110"
           aria-label="Clear search"
         >
           <XMarkIcon className="h-5 w-5" />

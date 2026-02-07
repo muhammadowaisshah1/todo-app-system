@@ -70,10 +70,13 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }: TaskItemP
         className="group"
       >
         <Card className={cn(
-          "p-4 transition-all duration-200 border-l-4",
+          "p-5 transition-all duration-300 border-l-4 relative overflow-hidden",
           task.completed
-            ? "bg-muted/40 border-l-green-500/50 opacity-75"
-            : "bg-card border-l-primary hover:shadow-lg hover:border-l-primary/80"
+            ? "bg-gradient-to-r from-green-50/50 to-emerald-50/50 dark:from-green-950/20 dark:to-emerald-950/20 border-l-green-500 opacity-80"
+            : "bg-card hover:shadow-xl hover:scale-[1.02] border-l-transparent hover:border-l-cyan-500",
+          !task.completed && task.priority === 'high' && "border-l-red-500",
+          !task.completed && task.priority === 'medium' && "border-l-yellow-500",
+          !task.completed && task.priority === 'low' && "border-l-green-500"
         )}>
           <div className="flex items-start gap-4">
             {/* Checkbox */}
@@ -81,42 +84,42 @@ export default function TaskItem({ task, onToggle, onDelete, onEdit }: TaskItemP
               onClick={handleToggle}
               disabled={isToggling}
               className={cn(
-                "mt-1 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200",
+                "mt-1 w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all duration-300 flex-shrink-0",
                 task.completed
-                  ? "bg-green-500 border-green-500 text-white"
-                  : "border-muted-foreground/30 hover:border-primary text-transparent"
+                  ? "bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 text-white shadow-lg shadow-green-500/30 scale-110"
+                  : "border-muted-foreground/30 hover:border-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-950/30 text-transparent hover:scale-110"
               )}
             >
-              <CheckIcon className="w-4 h-4" />
+              <CheckIcon className="w-5 h-5" />
             </button>
 
             {/* Content */}
             <div className="flex-1 min-w-0 space-y-1.5">
               <div className="flex items-start justify-between gap-2">
                 <h3 className={cn(
-                  "font-semibold text-base leading-none transition-colors",
-                  task.completed ? "text-muted-foreground line-through decoration-muted-foreground/50" : "text-foreground"
+                  "font-bold text-lg leading-tight transition-colors",
+                  task.completed ? "text-muted-foreground line-through decoration-2 decoration-muted-foreground/50" : "text-foreground"
                 )}>
                   {task.title}
                 </h3>
 
                 {/* Actions (visible on hover or focus) */}
-                <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-muted-foreground hover:text-primary"
+                    className="h-9 w-9 p-0 text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-950/30 rounded-lg transition-all hover:scale-110"
                     onClick={() => onEdit(task)}
                   >
-                    <PencilSquareIcon className="w-4 h-4" />
+                    <PencilSquareIcon className="w-5 h-5" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                    className="h-9 w-9 p-0 text-muted-foreground hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all hover:scale-110"
                     onClick={() => setShowDeleteConfirm(true)}
                   >
-                    <TrashIcon className="w-4 h-4" />
+                    <TrashIcon className="w-5 h-5" />
                   </Button>
                 </div>
               </div>

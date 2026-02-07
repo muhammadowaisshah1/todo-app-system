@@ -40,7 +40,15 @@ class ApiError extends Error {
 function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem('auth_token');
 
+  console.log('🔐 Getting auth headers...');
+  console.log('🔑 Token exists:', !!token);
+
+  if (token) {
+    console.log('🔑 Token preview:', token.substring(0, 20) + '...');
+  }
+
   if (!token) {
+    console.error('❌ No auth token found in localStorage');
     throw new Error('No authentication token found. Please log in.');
   }
 
@@ -164,18 +172,48 @@ export async function getTasks(completed?: boolean): Promise<Task[]> {
       url.searchParams.set('completed', String(completed));
     }
 
+    console.log('🔍 API_URL:', API_URL);
+    console.log('🔍 Full URL:', url.toString());
+    console.log('🔑 Auth token exists:', !!localStorage.getItem('auth_token'));
+
+    const headers = getAuthHeaders();
+    console.log('📤 Request headers:', headers);
+
+    console.log('🚀 Making fetch request...');
+
     const response = await fetch(url.toString(), {
       method: 'GET',
-      headers: getAuthHeaders(),
+      headers: headers,
+      mode: 'cors',
+      credentials: 'omit',
     });
+
+    console.log('📥 Response received! Status:', response.status);
 
     // Backend returns {tasks: [...], total: number}
     const data = await handleResponse<{ tasks: Task[]; total: number }>(response);
+    console.log('✅ Tasks fetched successfully:', data.tasks.length);
     return data.tasks; // Extract just the tasks array
   } catch (error) {
+    console.error('❌ Error details:', {
+      error,
+      message: (error as Error).message,
+      stack: (error as Error).stack,
+      name: (error as Error).name
+    });
+
     if (error instanceof ApiError) {
       throw error;
     }
+
+    // Better error message for network errors
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+      throw new Error(
+        'Cannot connect to backend server at ' + API_URL +
+        '. Please ensure the backend is running on port 8000.'
+      );
+    }
+
     throw new Error(`Failed to fetch tasks: ${(error as Error).message}`);
   }
 }

@@ -146,116 +146,142 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 animate-fadeIn">
-      {/* Header Section */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">
-            Overview of your task management progress.
-          </p>
-        </div>
-        <Button onClick={() => setShowCreateModal(true)} size="lg" className="shadow-lg shadow-primary/20">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-4 h-4 mr-2"
+      {/* Hero Header Section */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 p-8 shadow-2xl">
+        <div className="absolute inset-0 bg-grid-white/10" />
+        <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-black tracking-tight text-white">
+              Welcome back, {user?.name || 'User'}!
+            </h1>
+            <p className="text-white/90 text-lg font-medium">
+              Let&apos;s make today productive and organized.
+            </p>
+          </div>
+          <Button
+            onClick={() => setShowCreateModal(true)}
+            size="lg"
+            className="bg-white text-blue-600 hover:bg-white/90 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-semibold"
           >
-            <path d="M5 12h14" />
-            <path d="M12 5v14" />
-          </svg>
-          New Task
-        </Button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-5 h-5 mr-2"
+            >
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
+            New Task
+          </Button>
+        </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats Cards with Glass-morphism */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="relative overflow-hidden bg-gradient-to-br from-blue-500/10 to-cyan-500/10 dark:from-blue-500/20 dark:to-cyan-500/20 border-blue-200/50 dark:border-blue-800/50 hover:shadow-xl hover:scale-105 transition-all duration-300 animate-slideUp">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
+            <CardTitle className="text-sm font-semibold">Total Tasks</CardTitle>
+            <div className="p-2 rounded-lg bg-blue-500/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-5 w-5 text-blue-600 dark:text-blue-400"
+              >
+                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{tasks.length}</div>
-            <p className="text-xs text-muted-foreground">
-              +0% from last month
+            <div className="text-3xl font-black text-blue-600 dark:text-blue-400">{tasks.length}</div>
+            <p className="text-xs text-muted-foreground font-medium mt-1">
+              Total in your workspace
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden bg-gradient-to-br from-orange-500/10 to-amber-500/10 dark:from-orange-500/20 dark:to-amber-500/20 border-orange-200/50 dark:border-orange-800/50 hover:shadow-xl hover:scale-105 transition-all duration-300 animate-slideUp" style={{ animationDelay: '0.1s' }}>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-            </svg>
+            <CardTitle className="text-sm font-semibold">Active</CardTitle>
+            <div className="p-2 rounded-lg bg-orange-500/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-5 w-5 text-orange-600 dark:text-orange-400"
+              >
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{tasks.filter(t => !t.completed).length}</div>
-            <p className="text-xs text-muted-foreground">
-              Tasks remaining
+            <div className="text-3xl font-black text-orange-600 dark:text-orange-400">{tasks.filter(t => !t.completed).length}</div>
+            <p className="text-xs text-muted-foreground font-medium mt-1">
+              Tasks in progress
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="relative overflow-hidden bg-gradient-to-br from-green-500/10 to-emerald-500/10 dark:from-green-500/20 dark:to-emerald-500/20 border-green-200/50 dark:border-green-800/50 hover:shadow-xl hover:scale-105 transition-all duration-300 animate-slideUp" style={{ animationDelay: '0.2s' }}>
+          <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/10 rounded-full blur-2xl" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="h-4 w-4 text-muted-foreground"
-            >
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-              <polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
+            <CardTitle className="text-sm font-semibold">Completed</CardTitle>
+            <div className="p-2 rounded-lg bg-green-500/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-5 w-5 text-green-600 dark:text-green-400"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{tasks.filter(t => t.completed).length}</div>
-            <p className="text-xs text-muted-foreground">
-              Tasks finished
+            <div className="text-3xl font-black text-green-600 dark:text-green-400">{tasks.filter(t => t.completed).length}</div>
+            <p className="text-xs text-muted-foreground font-medium mt-1">
+              Successfully done
             </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Main Task List Area */}
-      <Card className="border-border/50">
+      <Card className="border-border/50 shadow-xl bg-card/50 backdrop-blur-sm">
+        <CardHeader className="border-b border-border/50 pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-2xl font-bold">Your Tasks</CardTitle>
+              <p className="text-sm text-muted-foreground mt-1">Organize and track your work efficiently</p>
+            </div>
+          </div>
+        </CardHeader>
         <CardContent className="p-6">
           <div className="mb-6">
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
-              placeholder="Filter tasks..."
+              placeholder="Search tasks by title, description, or category..."
             />
           </div>
 
@@ -273,43 +299,61 @@ export default function DashboardPage() {
 
       {/* Create Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-card border border-border rounded-xl shadow-2xl p-6 animate-in fade-in zoom-in duration-200">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Create New Task</h2>
-              <Button variant="ghost" size="icon" onClick={() => setShowCreateModal(false)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+          <div className="w-full max-w-2xl bg-card rounded-3xl shadow-2xl overflow-hidden animate-scaleIn">
+            {/* Modal Header */}
+            <div className="px-6 py-5 border-b border-border/50 flex items-center justify-between bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-slate-800 dark:to-slate-900">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+                </div>
+                <h2 className="text-xl font-bold">Create New Task</h2>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setShowCreateModal(false)} className="hover:bg-destructive/10 hover:text-destructive transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
               </Button>
             </div>
-            <TaskForm
-              onSubmit={handleCreateTask}
-              submitLabel="Create Task"
-              onCancel={() => setShowCreateModal(false)}
-            />
+            {/* Modal Body */}
+            <div className="px-6 py-6 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <TaskForm
+                onSubmit={handleCreateTask}
+                submitLabel="Create Task"
+                onCancel={() => setShowCreateModal(false)}
+              />
+            </div>
           </div>
         </div>
       )}
 
       {/* Edit Modal */}
       {editingTask && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-card border border-border rounded-xl shadow-2xl p-6 animate-in fade-in zoom-in duration-200">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">Edit Task</h2>
-              <Button variant="ghost" size="icon" onClick={() => setEditingTask(null)}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+          <div className="w-full max-w-2xl bg-card rounded-3xl shadow-2xl overflow-hidden animate-scaleIn">
+            {/* Modal Header */}
+            <div className="px-6 py-5 border-b border-border/50 flex items-center justify-between bg-gradient-to-r from-purple-50 to-pink-50 dark:from-slate-800 dark:to-slate-900">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 shadow-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                </div>
+                <h2 className="text-xl font-bold">Edit Task</h2>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setEditingTask(null)} className="hover:bg-destructive/10 hover:text-destructive transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
               </Button>
             </div>
-            <TaskForm
-              onSubmit={handleUpdateTask}
-              initialTitle={editingTask.title}
-              initialDescription={editingTask.description || ''}
-              initialCategory={editingTask.category}
-              initialPriority={editingTask.priority}
-              initialDueDate={editingTask.due_date}
-              submitLabel="Update Task"
-              onCancel={() => setEditingTask(null)}
-            />
+            {/* Modal Body */}
+            <div className="px-6 py-6 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <TaskForm
+                onSubmit={handleUpdateTask}
+                initialTitle={editingTask.title}
+                initialDescription={editingTask.description || ''}
+                initialCategory={editingTask.category}
+                initialPriority={editingTask.priority}
+                initialDueDate={editingTask.due_date}
+                submitLabel="Update Task"
+                onCancel={() => setEditingTask(null)}
+              />
+            </div>
           </div>
         </div>
       )}

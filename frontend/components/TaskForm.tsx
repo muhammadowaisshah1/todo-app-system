@@ -11,7 +11,13 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowPathIcon,
+  PencilIcon,
+  DocumentTextIcon,
+  ExclamationCircleIcon,
+  SparklesIcon
+} from '@heroicons/react/24/outline';
 
 interface TaskFormProps {
   onSubmit: (title: string, description: string, category?: string | null, priority?: string, dueDate?: Date | null) => Promise<void>;
@@ -105,77 +111,121 @@ export default function TaskForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="title">Title <span className="text-destructive">*</span></Label>
-          <Input
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="What needs to be done?"
-            disabled={loading}
-            className={cn(validationErrors.title && "border-destructive focus-visible:ring-destructive")}
-          />
-          {validationErrors.title && (
-            <p className="text-xs text-destructive font-medium">{validationErrors.title}</p>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Title Input */}
+      <div className="space-y-2">
+        <Label htmlFor="title" className="text-sm font-bold flex items-center gap-2">
+          <PencilIcon className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+          Task Title <span className="text-red-500">*</span>
+        </Label>
+        <Input
+          id="title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="What needs to be done?"
+          disabled={loading}
+          className={cn(
+            "w-full py-3 text-base font-medium rounded-xl border-2 transition-all duration-200",
+            "focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20",
+            "placeholder:text-gray-400 dark:placeholder:text-gray-500",
+            validationErrors.title && "border-red-400 dark:border-red-500 focus:border-red-500 focus:ring-red-500/20"
           )}
-        </div>
+        />
+        {validationErrors.title && (
+          <div className="flex items-center gap-2 text-xs text-red-600 dark:text-red-400 font-semibold animate-slideDown">
+            <ExclamationCircleIcon className="w-4 h-4 flex-shrink-0" />
+            {validationErrors.title}
+          </div>
+        )}
+      </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
+      {/* Description Textarea */}
+      <div className="space-y-2">
+        <Label htmlFor="description" className="text-sm font-bold flex items-center gap-2">
+          <DocumentTextIcon className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+          Description
+          <span className="text-xs font-normal text-gray-500 dark:text-gray-400">(Optional)</span>
+        </Label>
+        <div className="relative">
           <Textarea
             id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            placeholder="Add details..."
-            rows={3}
+            placeholder="Add more details about this task..."
+            rows={4}
             disabled={loading}
-            className={cn("resize-none", validationErrors.description && "border-destructive focus-visible:ring-destructive")}
+            className={cn(
+              "w-full text-base rounded-xl border-2 transition-all duration-200 resize-none",
+              "focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20",
+              "placeholder:text-gray-400 dark:placeholder:text-gray-500",
+              validationErrors.description && "border-red-400 dark:border-red-500 focus:border-red-500 focus:ring-red-500/20"
+            )}
           />
-          {validationErrors.description && (
-            <p className="text-xs text-destructive font-medium">{validationErrors.description}</p>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* We keep existing components but wrap them to align with Label style if possible, 
-               or just let them be self-contained as they handle their own labels in the current code */}
-          <div className="space-y-2">
-            <PrioritySelector value={priority} onChange={setPriority} />
-          </div>
-          <div className="space-y-2">
-            <CategorySelector value={category} onChange={setCategory} />
+          <div className="absolute bottom-2 right-2 text-xs font-medium text-gray-400 dark:text-gray-500 bg-background/80 px-2 py-1 rounded-md">
+            {formData.description.length}/1000
           </div>
         </div>
+        {validationErrors.description && (
+          <div className="flex items-center gap-2 text-xs text-red-600 dark:text-red-400 font-semibold animate-slideDown">
+            <ExclamationCircleIcon className="w-4 h-4 flex-shrink-0" />
+            {validationErrors.description}
+          </div>
+        )}
+      </div>
 
-        <div className="space-y-2">
-          <DatePicker value={dueDate} onChange={setDueDate} />
+      {/* Selectors Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <PrioritySelector value={priority} onChange={setPriority} />
+        </div>
+        <div>
+          <CategorySelector value={category} onChange={setCategory} />
         </div>
       </div>
 
+      {/* Date Picker Full Width */}
+      <div>
+        <DatePicker value={dueDate} onChange={setDueDate} />
+      </div>
+
+      {/* Error Message */}
       {error && (
-        <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md text-sm text-destructive font-medium">
-          {error}
+        <div className="flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-xl text-sm text-red-700 dark:text-red-300 font-semibold animate-slideDown">
+          <ExclamationCircleIcon className="w-5 h-5 flex-shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
-      <div className="flex justify-end gap-3 pt-4 border-t border-border/50">
+      {/* Action Buttons */}
+      <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-2 border-t border-border/50 mt-6">
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} disabled={loading}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            disabled={loading}
+            className="w-full sm:w-auto min-w-[120px] py-3 text-base font-semibold rounded-xl border-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+          >
             Cancel
           </Button>
         )}
-        <Button type="submit" disabled={loading} className="min-w-[120px]">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full sm:w-auto min-w-[160px] py-3 text-base font-semibold rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-600 hover:via-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200"
+        >
           {loading ? (
             <>
-              <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />
-              Saving...
+              <ArrowPathIcon className="mr-2 h-5 w-5 animate-spin" />
+              <span>Saving...</span>
             </>
           ) : (
-            submitLabel
+            <>
+              <SparklesIcon className="mr-2 h-5 w-5" />
+              {submitLabel}
+            </>
           )}
         </Button>
       </div>

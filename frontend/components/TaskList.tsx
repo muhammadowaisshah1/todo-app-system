@@ -97,7 +97,9 @@ export default function TaskList({
     return (
       <div className="space-y-4">
         {[1, 2, 3].map(i => (
-          <Card key={i} className="h-24 animate-pulse bg-muted/50" />
+          <Card key={i} className="h-28 relative overflow-hidden bg-gradient-to-r from-muted/30 to-muted/50">
+            <div className="absolute inset-0 shimmer" />
+          </Card>
         ))}
       </div>
     );
@@ -121,39 +123,42 @@ export default function TaskList({
   return (
     <div className="space-y-6">
       {/* Filters Toolbar */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-card p-1 rounded-lg border-none sm:border">
-        <div className="flex p-1 bg-muted/50 rounded-lg w-full sm:w-auto">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+        <div className="flex p-1.5 bg-muted/30 rounded-xl w-full sm:w-auto border border-border/50 shadow-sm">
           {(['all', 'active', 'completed'] as const).map((type) => (
             <button
               key={type}
               onClick={() => setFilter(type)}
               className={cn(
-                "flex-1 sm:flex-none px-4 py-1.5 text-sm font-medium rounded-md transition-all",
+                "flex-1 sm:flex-none px-5 py-2.5 text-sm font-semibold rounded-lg transition-all duration-300",
                 filter === type
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+                  ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
               {type.charAt(0).toUpperCase() + type.slice(1)}
-              <span className="ml-2 text-xs opacity-60">
+              <span className={cn(
+                "ml-2 text-xs px-1.5 py-0.5 rounded-full",
+                filter === type
+                  ? "bg-white/20"
+                  : "bg-muted"
+              )}>
                 {taskCounts[type]}
               </span>
             </button>
           ))}
         </div>
-
-        {/* Additional Filters Toggle could go here if we want to hide/show them */}
       </div>
 
       {/* Advanced Filters */}
       {(tasks.some(t => t.category) || tasks.some(t => t.priority)) && (
-        <div className="flex flex-wrap gap-2 items-center text-sm">
-          <span className="text-muted-foreground mr-2 flex items-center gap-1">
-            <FunnelIcon className="w-4 h-4" /> Filter by:
+        <div className="flex flex-wrap gap-3 items-center text-sm bg-muted/20 p-4 rounded-xl border border-border/50">
+          <span className="text-muted-foreground font-semibold flex items-center gap-2">
+            <FunnelIcon className="w-5 h-5" /> Filter by:
           </span>
 
           {tasks.some(t => t.priority) && (
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-2">
               {PRIORITIES.map(pri => {
                 const isActive = priorityFilter === pri.value;
                 return (
@@ -161,8 +166,10 @@ export default function TaskList({
                     key={pri.value}
                     onClick={() => setPriorityFilter(isActive ? null : pri.value)}
                     className={cn(
-                      "px-2 py-1 rounded-full border text-xs flex items-center gap-1 transition-colors",
-                      isActive ? "bg-primary/10 border-primary text-primary" : "border-transparent bg-muted hover:bg-muted/80 text-muted-foreground"
+                      "px-3 py-1.5 rounded-lg border-2 text-xs font-semibold flex items-center gap-1.5 transition-all duration-300",
+                      isActive
+                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 border-cyan-400 text-white shadow-lg shadow-cyan-500/30 scale-105"
+                        : "border-border bg-background hover:bg-muted hover:scale-105 text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {pri.icon} {pri.label}
@@ -172,10 +179,10 @@ export default function TaskList({
             </div>
           )}
 
-          <div className="w-px h-4 bg-border mx-1" />
+          <div className="w-px h-6 bg-border mx-1" />
 
           {tasks.some(t => t.category) && (
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-2">
               {CATEGORIES.map(cat => {
                 const isActive = categoryFilter === cat.value;
                 return (
@@ -183,8 +190,10 @@ export default function TaskList({
                     key={cat.value}
                     onClick={() => setCategoryFilter(isActive ? null : cat.value)}
                     className={cn(
-                      "px-2 py-1 rounded-full border text-xs flex items-center gap-1 transition-colors",
-                      isActive ? "bg-primary/10 border-primary text-primary" : "border-transparent bg-muted hover:bg-muted/80 text-muted-foreground"
+                      "px-3 py-1.5 rounded-lg border-2 text-xs font-semibold flex items-center gap-1.5 transition-all duration-300",
+                      isActive
+                        ? "bg-gradient-to-r from-purple-500 to-pink-600 border-purple-400 text-white shadow-lg shadow-purple-500/30 scale-105"
+                        : "border-border bg-background hover:bg-muted hover:scale-105 text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {cat.icon} {cat.label}
@@ -199,9 +208,9 @@ export default function TaskList({
               variant="ghost"
               size="sm"
               onClick={() => { setCategoryFilter(null); setPriorityFilter(null); }}
-              className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
+              className="h-8 px-3 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-destructive/10 rounded-lg"
             >
-              <XMarkIcon className="w-3 h-3 mr-1" /> Clear
+              <XMarkIcon className="w-4 h-4 mr-1" /> Clear Filters
             </Button>
           )}
         </div>
@@ -222,25 +231,25 @@ export default function TaskList({
             ))
           ) : (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center py-16 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="flex flex-col items-center justify-center py-20 text-center"
             >
-              <div className="p-4 rounded-full bg-muted/50 mb-4">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 mb-6 shadow-lg">
                 {filter === 'completed' ? (
-                  <ClipboardDocumentCheckIcon className="w-12 h-12 text-muted-foreground/50" />
+                  <ClipboardDocumentCheckIcon className="w-16 h-16 text-green-500/50" />
                 ) : (
-                  <InboxIcon className="w-12 h-12 text-muted-foreground/50" />
+                  <InboxIcon className="w-16 h-16 text-cyan-500/50" />
                 )}
               </div>
-              <h3 className="text-lg font-semibold text-muted-foreground">No tasks found</h3>
-              <p className="text-sm text-muted-foreground/60 max-w-sm mt-1">
+              <h3 className="text-xl font-bold text-muted-foreground mb-2">No tasks found</h3>
+              <p className="text-base text-muted-foreground/70 max-w-sm">
                 {searchQuery
                   ? `No matches for "${searchQuery}"`
                   : filter === 'completed'
-                    ? "You haven't completed any tasks yet."
-                    : "You have no tasks in this view."}
+                    ? "You haven't completed any tasks yet. Keep going!"
+                    : "You have no tasks in this view. Create one to get started."}
               </p>
             </motion.div>
           )}
