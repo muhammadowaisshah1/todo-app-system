@@ -39,7 +39,7 @@ export default function Home() {
 
           {/* Brand name with gradient */}
           <h1 className="text-5xl font-black tracking-tight">
-            <span className="gradient-text">Prism</span>
+            <span className="gradient-text">Prism AI</span>
           </h1>
 
           <p className="text-muted-foreground text-lg font-medium max-w-sm mx-auto">
