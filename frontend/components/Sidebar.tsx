@@ -69,7 +69,7 @@ export default function Sidebar() {
                             <path d="M2 12l10 5 10-5" />
                         </svg>
                     </div>
-                    <span className="text-xl font-black tracking-tight gradient-text">Prism</span>
+                    <span className="text-xl font-black tracking-tight gradient-text">Prism AI</span>
                 </div>
             </div>
 
